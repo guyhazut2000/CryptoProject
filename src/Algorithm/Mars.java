@@ -1,4 +1,4 @@
-package Algorithms;
+package Algorithm;
 
 public class Mars {
 
