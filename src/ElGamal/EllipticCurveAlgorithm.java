@@ -159,7 +159,9 @@ public class EllipticCurveAlgorithm {
         EllipticCurveAlgorithm algorithm = new EllipticCurveAlgorithm();
         PointProccessor processor = new PointProccessor();
         System.out.println("Base " + algorithm.base);
-        String text = "guy hazut";
+        long key = 234233334; // the key we want to encrypt.
+        //String text = "guy hazut";
+        String text = new String(String.valueOf(key));
         byte[] bytes = text.getBytes();
         System.out.println("Text : " + text);
         // generate alice and bob private keys (a,b) and public keys (pa,pb)
