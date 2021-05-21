@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Algorithm;
+package ElGamal;
 
-import ElGamal.Pair;
 
 
 /**
@@ -133,7 +132,7 @@ public class PointProccessor {
         return res;
     }
 
-    public Pair<Point, Point> encrypt(Point pm, Point pub, Point base, long a) { // plain text , bob public key , base point
+    public Pair<Point, Point> encrypt(Point pm, Point pub, Point base, long a) { // plain text , bob public key , base point, alice pri key
 
         Pair<Point, Point> Pc = null;
         long p = EllipticCurveAlgorithm.P;
