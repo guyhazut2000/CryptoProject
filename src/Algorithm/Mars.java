@@ -1,9 +1,11 @@
 package Algorithm;
 
+import java.util.concurrent.BlockingDeque;
+
 public class Mars {
 
 
-    private static int[] K;
+    public static int[] K;
 
     private static int [] s_box ={
             0x09d0c479, 0x28c8ffe0, 0x84aa6c39, 0x9dad7287, 0x7dff9be3, 0xd4268361, 0xc96da1d4, 0x7974cc93, 0x85d0582e, 0x2a4b5705,
@@ -380,7 +382,7 @@ public class Mars {
         return tmp;
     }
 
-    public static byte[] encrypt(byte[] in,byte[] key){
+    public static byte[] encrypt(byte[] in,byte[] key, byte[] iv) throws Exception {
         K = expandKey(key);
         int lenght=0;
         byte[] padding = new byte[1];
@@ -396,10 +398,14 @@ public class Mars {
         byte[] bloc = new byte[16];
 
         int count = 0;
-
+        System.out.println("start encryption : in = " + new String(in) + " key  = " + new String(key) + " iv = " + new String(iv) );
         for (i = 0; i < in.length + lenght; i++) {
             if (i > 0 && i % 16 == 0) {
-                bloc = encryptBloc(bloc);
+                //bloc = encryptBloc(bloc);
+                bloc = encryptBloc(iv); // mars encryption result.
+                System.out.println("each encrypt block func = "+bloc.length);
+                iv = bloc;
+                byte[] cipher = MarsOFB.xor(bloc,in);
                 System.arraycopy(bloc, 0, tmp, i - 16, bloc.length);
             }
             if (i < in.length)
@@ -410,10 +416,13 @@ public class Mars {
             }
         }
         if(bloc.length == 16){
-            bloc = encryptBloc(bloc);
+            //bloc = encryptBloc(bloc);
+            bloc = encryptBloc(iv); // mars encryption result.
+            iv = bloc;
+            byte[] cipher = MarsOFB.xor(bloc,in);
             System.arraycopy(bloc, 0, tmp, i - 16, bloc.length);
         }
-
+        System.out.println(new String(tmp));
         return tmp;
     }
 
@@ -439,7 +448,7 @@ public class Mars {
         return tmp;
     }
 
-    private static byte[] deletePadding(byte[] input) {
+    public static byte[] deletePadding(byte[] input) {
         int count = 0;
 
         int i = input.length - 1;

@@ -45,14 +45,7 @@ public class Rabin {
         int sig = 0;
         while(true){
             //convert byte to integer number.
-            byte[] bytes = m;
-            for (int i = 0; i < bytes.length / 2; i++) {
-                byte temp = bytes[i];
-                bytes[i] = bytes[bytes.length - i - 1];
-                bytes[bytes.length - i - 1] = temp;
-            }
-            int mInteger = new BigInteger(1, bytes).intValue();
-            System.out.println("Converted message to Integer = "+ mInteger);
+            int mInteger = convertByteArrayToInteger(m.clone());
 
             //generate U.
             //u = new Random().nextInt(990) +10;
@@ -113,7 +106,7 @@ public class Rabin {
             p = 31;
             q = 23;
         }
-        String message = "hi ";
+        String message = "sdfab";
         byte[] msg = message.getBytes(StandardCharsets.UTF_8);
 
         int nRabin = p*q;
@@ -122,19 +115,25 @@ public class Rabin {
         int x = arrayList.get(1);//get x = sig
 
         //verification
-        //convert byte to integer number.
-        byte[] bytes = msg;
+        int mInteger = rabin.convertByteArrayToInteger(msg.clone());
+
+        int sig2 = x*x;
+        System.out.println("sig*sig = " + sig2 % nRabin);
+        System.out.println("Hash = " + rabin.H(mInteger, u) % nRabin);
+        boolean isVerified = ((rabin.H(mInteger, u) % (p*q)) == (sig2 % (p*q)));
+        System.out.println("the verified status is: "+ (isVerified == true ? "Verified" : "Not Verified"));
+    }
+
+
+    public int convertByteArrayToInteger(byte[] b){
+        byte[] bytes = b;
         for (int i = 0; i < bytes.length / 2; i++) {
             byte temp = bytes[i];
             bytes[i] = bytes[bytes.length - i - 1];
             bytes[bytes.length - i - 1] = temp;
         }
-        int mInteger = new BigInteger(1, bytes).intValue();
-        int sig2 = x*x;
-        System.out.println("sig*sig = " + sig2 % (nRabin));
-        System.out.println("H(m,u) = "+ rabin.H(mInteger,u) % (nRabin));
-        boolean isVerified = ((rabin.H(mInteger, u) % (p*q)) == (sig2 % (nRabin)));
-        System.out.println("the verified status is: "+ (isVerified == true ? "Verified" : "Not Verified"));
+        int tmp = new BigInteger(1, bytes).intValue();
+        System.out.println("Converted message to Integer = "+ tmp);
+        return tmp;
     }
-
 }

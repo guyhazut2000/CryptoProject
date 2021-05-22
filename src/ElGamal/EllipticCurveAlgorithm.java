@@ -159,7 +159,7 @@ public class EllipticCurveAlgorithm {
         EllipticCurveAlgorithm algorithm = new EllipticCurveAlgorithm();
         PointProccessor processor = new PointProccessor();
         System.out.println("Base " + algorithm.base);
-        long key = 234233334; // the key we want to encrypt.
+        long key = 2; // the key we want to encrypt.
         //String text = "guy hazut";
         String text = new String(String.valueOf(key));
         byte[] bytes = text.getBytes();
